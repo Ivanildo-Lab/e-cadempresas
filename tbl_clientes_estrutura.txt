@@ -1,0 +1,99 @@
+Coluna 	Tipo	Obrigatória
+Title	Texto com uma linha	
+Apelido	Texto com uma linha	
+Nomecliente	Texto com uma linha	
+Sexo	Número	
+EnderecoCliente	Texto com uma linha	
+BairroCliente	Texto com uma linha	
+Referencia	Texto com uma linha	
+Correio	Sim/Não	
+Cepcliente	Texto com uma linha	
+CidadeCliente	Texto com uma linha	
+EstadoCliente	Texto com uma linha	
+CPFCliente	Texto com uma linha	
+RGCliente	Texto com uma linha	
+DataRG	Data e Hora	
+Fonecliente	Texto com uma linha	
+ModoDeMoradia	Texto com uma linha	
+ValorAluguel	Moeda	
+FaxCliente	Texto com uma linha	
+CGCCliente	Texto com uma linha	
+INSCCliente	Texto com uma linha	
+InscMunicipal	Texto com uma linha	
+CxPostal	Texto com uma linha	
+Instrucao	Número	
+Contato	Texto com uma linha	
+EnderecoDeCobranca	Texto com uma linha	
+Obs	Texto com várias linhas	
+EstadoCivil	Número	
+Conjugue	Texto com uma linha	
+TrabConjugue	Texto com uma linha	
+Filhos	Número	
+NomesFilhos	Texto com várias linhas	
+ProfissConjugue	Texto com uma linha	
+RgConjugue	Texto com uma linha	
+CPFConjugue	Texto com uma linha	
+DataNascimento	Data e Hora	
+Naturalidade	Texto com uma linha	
+Profissao	Texto com uma linha	
+EmpresaTrabalho	Texto com uma linha	
+EnderecoTrabalho	Texto com uma linha	
+CargoTrabalho	Texto com uma linha	
+TelefoneEmpresa	Texto com uma linha	
+TempoDeTrabalho	Texto com uma linha	
+Rendimento	Moeda	
+NomeDoPAi	Texto com uma linha	
+NomeDaMae	Texto com uma linha	
+EnderecoPais	Texto com uma linha	
+NomeAvalista	Texto com uma linha	
+FoneAvalista	Texto com uma linha	
+EnderecoAvalista	Texto com uma linha	
+TrabalhoAvalista	Texto com uma linha	
+EndTrabAvalista	Texto com uma linha	
+FoneTrabalhoaval	Texto com uma linha	
+SPC	Sim/Não	
+DataSPC	Data e Hora	
+DestinoSPC	Texto com uma linha	
+DataCadastro	Data e Hora	
+Televisao	Opção	
+Novela	Texto com uma linha	
+ProgramaLocal	Texto com uma linha	
+Radios	Número	
+PrefVestuario	Texto com uma linha	
+PrefCalcado	Texto com uma linha	
+CartaoDeCredito	Opção	
+Email	Texto com uma linha	
+LimDecredito	Número	
+ValorLimite	Moeda	
+CodSetor	Número	
+CodConvenio	Número	
+NumChapa	Texto com uma linha	
+ClienteEspecial	Sim/Não	
+ClienteInativo	Sim/Não	
+DataInativo	Data e Hora	
+DataCobranca	Data e Hora	
+CodTipoDeempresa	Número	
+SituacaoDaEmpresa	Número	
+CaracteristicaDaEmpresa	Número	
+CapitaDaEmpresa	Número	
+CNAE	Número	
+RegimeDePagamento	Número	
+InicioDeAtividade	Data e Hora	
+ValorServico	Número	
+DiaCobranca	Número	
+CodtipoEmpresa	Número	
+CEI	Texto com uma linha	
+NIRF	Texto com uma linha	
+NIRE	Texto com uma linha	
+SituacaoCadastro	Número	
+CodCNAE	Número	
+TipEmpresa	Número	
+SitEmpresa	Número	
+SitCadastro	Número	
+REGEMPRESA	Número	
+_OldID	Número	
+Ativo	Sim/Não	
+Modificado	Data e Hora	
+Criado	Data e Hora	
+Criado por	Pessoa ou Grupo	
+Modificado por	Pessoa ou Grupo

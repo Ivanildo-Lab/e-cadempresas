@@ -1,0 +1,18 @@
+Coluna (clique para editar)	Tipo	Obrigatória
+Title	Texto com uma linha	
+Codigo	Número	
+SelecaoTabela	Texto com uma linha	
+Grupo	Texto com uma linha	
+DescricaoTabela	Texto com uma linha	
+Ativo	Sim/Não	
+URL Absoluto Codificado	Texto com uma linha	
+Tipo de Item	Opção	
+Caminho	Texto com uma linha	
+Caminho do URL	Texto com uma linha	
+ID de Instância de Fluxo de Trabalho	Texto com uma linha	
+Tipo de Ficheiro	Texto com uma linha	
+_OldID	Número	
+Modificado	Data e Hora	
+Criado	Data e Hora	
+Criado por	Pessoa ou Grupo	
+Modificado por	Pessoa ou Grupo
