@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block titulo_pagina %}Configurações{% endblock %}
+{% block titulo_cabecalho %}Gerenciar {{ tipo }}{% endblock %}
+
+{% block content %}
+<div class="box box-default">
+    <div class="box-header with-border">
+        <div class="row">
+            <div class="col-md-6">
+                <!-- Formulário de Busca -->
+                <form method="get" class="form-inline">
+                    <input type="hidden" name="tipo" value="{{ tipo }}"> <!-- Mantém o tipo da tabela -->
+                    <div class="input-group input-group-sm" style="width: 350px;">
+                        <input type="text" name="q_tab" class="form-control" 
+                               placeholder="Buscar por código ou descrição..." 
+                               value="{{ q_tab }}">
+                        <div class="input-group-btn">
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                            {% if q_tab %}
+                                <a href="?tipo={{ tipo }}" class="btn btn-default" title="Limpar busca"><i class="fa fa-eraser"></i></a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-6 text-right">
+                <a href="{% url 'tabela_create' %}?tipo={{ tipo }}" class="btn btn-success btn-sm">
+                    <i class="fa fa-plus"></i> Novo em {{ tipo }}
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="box-body table-responsive no-padding">
+        <table class="table table-hover table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th style="width: 150px;">Código</th>
+                    <th>Descrição</th>
+                    <th class="text-center" style="width: 100px;">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in page_obj %}
+                <tr>
+                    <td><code>{{ item.codigo|default:"-" }}</code></td>
+                    <td>{{ item.descricao }}</td>
+                    <td class="text-center">
+                        <a href="{% url 'tabela_edit' item.pk %}" class="btn btn-warning btn-xs"><i class="fa fa-edit"></i></a>
+                        <a href="{% url 'tabela_delete' item.pk %}" class="btn btn-danger btn-xs" onclick="return confirm('Excluir este item?')"><i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3" class="text-center">Nenhum registro encontrado para "{{ q_tab }}".</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if page_obj.has_other_pages %}
+    <div class="box-footer clearfix">
+        <ul class="pagination pagination-sm no-margin pull-right">
+            {% if page_obj.has_previous %}
+                <li><a href="?tipo={{ tipo }}&q_tab={{ q_tab }}&page=1">&laquo; Primeira</a></li>
+                <li><a href="?tipo={{ tipo }}&q_tab={{ q_tab }}&page={{ page_obj.previous_page_number }}">Anterior</a></li>
+            {% endif %}
+
+            <li class="active"><a href="#">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</a></li>
+
+            {% if page_obj.has_next %}
+                <li><a href="?tipo={{ tipo }}&q_tab={{ q_tab }}&page={{ page_obj.next_page_number }}">Próxima</a></li>
+                <li><a href="?tipo={{ tipo }}&q_tab={{ q_tab }}&page={{ page_obj.paginator.num_pages }}">Última &raquo;</a></li>
+            {% endif %}
+        </ul>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

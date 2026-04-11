@@ -1,0 +1,129 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>e-CadEmpresas | Login</title>
+    <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <style>
+            body, html {
+                height: 100%;
+                margin: 0;
+                font-family: 'Source Sans Pro', sans-serif;
+            }
+            .bg-image {
+                /* Agora buscando a imagem da sua pasta static local */
+                background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+                                url("{% static 'img/bg_login.jpg' %}");
+                
+                background-size: cover;
+                background-position: center;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .login-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        .logo-icon {
+            background: #2563eb;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 30px;
+            margin-bottom: 20px;
+        }
+        h2 { font-weight: 700; margin-bottom: 5px; color: #1e293b; }
+        p.subtitle { color: #64748b; margin-bottom: 30px; }
+        
+        .form-group { text-align: left; margin-bottom: 20px; }
+        .form-group label { color: #475569; font-weight: 600; }
+        
+        .input-group-addon { background: white; border-right: none; color: #94a3b8; }
+        .form-control { border-left: none; height: 45px; border-radius: 0 8px 8px 0; }
+        .form-control:focus { border-color: #cbd5e1; box-shadow: none; }
+        
+        .btn-primary {
+            background: #2563eb;
+            border: none;
+            height: 50px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+        .btn-primary:hover { background: #1d4ed8; transform: translateY(-2px); }
+        .footer-text { margin-top: 30px; font-size: 12px; color: #94a3b8; }
+    </style>
+</head>
+<body>
+
+<div class="bg-image">
+    <div class="login-card">
+        <div class="logo-icon">
+            <i class="fa fa-pie-chart"></i>
+        </div>
+        
+        <h2>Bem-vindo</h2>
+        <p class="subtitle">Acesse sua conta para gerenciar as empresas.</p>
+
+        <form method="post">
+            {% csrf_token %}
+            
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-info" style="font-size: 13px; border-radius: 8px;">
+                        <i class="fa fa-info-circle"></i> {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <div class="form-group">
+                <label>Usuário</label>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                    <input type="text" name="username" class="form-control" placeholder="Seu usuário ou e-mail">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Senha</label>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                    <input type="password" name="password" class="form-control" placeholder="Sua senha secreta">
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Entrar no Sistema</button>
+        </form>
+
+        <div class="footer-text">
+            © 2026 <b>e-CadEmpresas</b>.<br>
+            Sistema de Escritório Contábil Seguro.
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</body>
+</html>

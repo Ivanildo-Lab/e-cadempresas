@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        @page {
+            size: a4 landscape;
+            margin: 1cm;
+            @frame footer {
+                -pdf-frame-content: footer_content;
+                bottom: 0.5cm;
+                margin-left: 1cm;
+                margin-right: 1cm;
+                height: 1cm;
+            }
+        }
+        /* Correção de fontes para evitar erros de acentuação */
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 9px;
+            color: #333;
+        }
+        .header-table {
+            width: 100%;
+            border-bottom: 2px solid #3c8dbc;
+            margin-bottom: 15px;
+        }
+        .title {
+            font-size: 18px;
+            color: #3c8dbc;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .info-header {
+            text-align: right;
+            color: #666;
+            font-size: 8px;
+        }
+        .filtros-barra {
+            background-color: #f4f4f4;
+            padding: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th {
+            background-color: #3c8dbc;
+            color: white;
+            text-align: left;
+            padding: 6px;
+            text-transform: uppercase;
+            border: 1px solid #2d6a8b;
+        }
+        td {
+            padding: 5px;
+            border-bottom: 1px solid #eee;
+            vertical-align: middle;
+        }
+        /* Efeito Zebra */
+        .even { background-color: #f9f9f9; }
+        
+        .footer {
+            text-align: center;
+            font-size: 8px;
+            color: #999;
+        }
+        .text-bold { font-weight: bold; }
+    </style>
+</head>
+<body>
+    <table class="header-table">
+        <tr>
+            <td>
+                <div class="title">e-CadEmpresas</div>
+                <div>Relatório Gerencial de Clientes</div>
+            </td>
+            <td class="info-header">
+                Emitido em: {{ data_emissao|date:"d/m/Y H:i" }}<br>
+                Escritório de Contabilidade
+            </td>
+        </tr>
+    </table>
+
+    <div class="filtros-barra">
+        <b>Filtros aplicados:</b> 
+        Busca: {{ filtros.busca|default:"Nenhum" }} | 
+        Situação: {{ filtros.situacao }}
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 30%">Razão Social</th>
+                <th style="width: 15%">CNPJ</th>
+                <th style="width: 15%">Insc. Estadual</th>
+                <th style="width: 25%">Endereço (Cidade/UF)</th>
+                <th style="width: 15%">Telefone</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for emp in empresas %}
+            <tr class="{% cycle '' 'even' %}">
+                <td class="text-bold">{{ emp.razao_social }}</td>
+                <td>{{ emp.cnpj }}</td>
+                <td>{{ emp.inscricao_estadual|default:"ISENTO" }}</td>
+                <td>
+                    {{ emp.endereco|default:"" }} - 
+                    {{ emp.cidade|default:"-" }}/{{ emp.estado|default:"-" }}
+                </td>
+                <td>{{ emp.telefone|default:"-" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div id="footer_content" class="footer">
+        Página <pdf:pagenumber> de <pdf:pagecount> - e-CadEmpresas Sistema Contábil
+    </div>
+</body>
+</html>

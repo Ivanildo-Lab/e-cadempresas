@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block titulo_cabecalho %}{{ titulo }} - {{ tipo }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <div class="box box-primary">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.tipo }} <!-- Campo oculto -->
+                <div class="box-body">
+                    <div class="form-group">
+                        <label>Código</label>
+                        {{ form.codigo }}
+                    </div>
+                    <div class="form-group">
+                        <label>Descrição</label>
+                        {{ form.descricao }}
+                    </div>
+                </div>
+                <div class="box-footer text-right">
+                    <a href="{% url 'tabela_list' %}?tipo={{ tipo }}" class="btn btn-default">Cancelar</a>
+                    <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

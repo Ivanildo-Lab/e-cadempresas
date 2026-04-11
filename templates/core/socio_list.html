@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block titulo_pagina %}Sócios{% endblock %}
+{% block titulo_cabecalho %}Lista de Sócios{% endblock %}
+
+{% block content %}
+<div class="box box-info">
+    <div class="box-header">
+        <h3 class="box-title">Sócios Cadastrados</h3>
+        <div class="box-tools">
+            <a href="{% url 'socio_create' %}" class="btn btn-info btn-sm"><i class="fa fa-plus"></i> Novo Sócio</a>
+        </div>
+    </div>
+    <div class="box-body table-responsive">
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>CPF</th>
+                    <th>Empresa Vinculada</th>
+                    <th>Participação</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for socio in socios %}
+                <tr>
+                    <td>{{ socio.nome }}</td>
+                    <td>{{ socio.cpf }}</td>
+                    <td><a href="{% url 'empresa_edit' socio.empresa.pk %}">{{ socio.empresa.razao_social }}</a></td>
+                    <td>R$ {{ socio.valor_participacao }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="4" class="text-center">Nenhum sócio encontrado.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+
+{% block titulo_pagina %}Empresas{% endblock %}
+{% block titulo_cabecalho %}Gestão de Clientes{% endblock %}
+
+{% block content %}
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <div class="row">
+            <!-- Formulário Único de Filtros -->
+            <form method="get" id="form-filtros">
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                        <input type="text" name="q" class="form-control" placeholder="Razão Social, CNPJ ou NIRE..." value="{{ request.GET.q|default:'' }}">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <select name="sit_cad" class="form-control">
+                        <option value="">Todas as Situações</option>
+                        {% for sit in situacoes_cadastro %}
+                            <option value="{{ sit.id }}" {% if request.GET.sit_cad == sit.id|stringformat:"i" %}selected{% endif %}>
+                                {{ sit.descricao }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-5 text-right">
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-filter"></i> Filtrar</button>
+                    
+                    <a href="javascript:void(0)" onclick="imprimirPDF()" class="btn btn-danger">
+                        <i class="fa fa-file-pdf-o"></i> PDF
+                    </a>
+
+                    <a href="{% url 'empresa_create' %}" class="btn btn-success">
+                        <i class="fa fa-plus"></i> Novo Cliente
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="box-body table-responsive no-padding">
+        <table class="table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th style="width: 10px">ID</th>
+                    <th>Razão Social</th>
+                    <th>CNPJ</th>
+                    <th>Cidade/UF</th>
+                    <th>Situação</th>
+                    <th class="text-center" style="width: 100px;">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for emp in page_obj %}
+                <tr>
+                    <td>{{ emp.id }}</td>
+                    <td><b>{{ emp.razao_social }}</b></td>
+                    <td>{{ emp.cnpj }}</td>
+                    <td>{{ emp.cidade|default:"-" }}/{{ emp.estado|default:"-" }}</td>
+                    <td>
+                        <span class="label label-info">{{ emp.situacao_cadastro.descricao|default:"Não Inf." }}</span>
+                    </td>
+                    <td class="text-center">
+                        <a href="{% url 'empresa_edit' emp.pk %}" class="btn btn-warning btn-xs" title="Editar"><i class="fa fa-edit"></i></a>
+                        
+                        <button type="button" class="btn btn-danger btn-xs" 
+                                onclick="confirmarExclusao('{{ emp.pk }}', '{{ emp.razao_social }}')" 
+                                data-toggle="modal" data-target="#modal-exclusao" title="Excluir">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="6" class="text-center">Nenhuma empresa encontrada.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Paginação -->
+    {% if page_obj.has_other_pages %}
+    <div class="box-footer clearfix">
+        <ul class="pagination pagination-sm no-margin pull-right">
+            {% if page_obj.has_previous %}
+                <li><a href="?page=1&q={{ request.GET.q|default:'' }}&sit_cad={{ request.GET.sit_cad|default:'' }}">&laquo; Primeira</a></li>
+                <li><a href="?page={{ page_obj.previous_page_number }}&q={{ request.GET.q|default:'' }}&sit_cad={{ request.GET.sit_cad|default:'' }}">Anterior</a></li>
+            {% endif %}
+
+            <li class="active"><a href="#">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</a></li>
+
+            {% if page_obj.has_next %}
+                <li><a href="?page={{ page_obj.next_page_number }}&q={{ request.GET.q|default:'' }}&sit_cad={{ request.GET.sit_cad|default:'' }}">Próxima</a></li>
+                <li><a href="?page={{ page_obj.paginator.num_pages }}&q={{ request.GET.q|default:'' }}&sit_cad={{ request.GET.sit_cad|default:'' }}">Última &raquo;</a></li>
+            {% endif %}
+        </ul>
+    </div>
+    {% endif %}
+</div>
+
+<!-- MODAL DE EXCLUSÃO -->
+<div class="modal fade" id="modal-exclusao" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="form-exclusao" method="post">
+                {% csrf_token %}
+                <div class="modal-header bg-red">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"><i class="fa fa-warning"></i> Confirmar Exclusão</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Deseja realmente excluir a empresa <b id="nome-empresa-exclusao"></b>?</p>
+                    <p class="text-muted"><small>Esta ação é irreversível e removerá todos os sócios vinculados.</small></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger">Sim, Excluir</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    /**
+     * Prepara o formulário de exclusão dentro do modal
+     */
+    function confirmarExclusao(id, nome) {
+        $('#nome-empresa-exclusao').text(nome);
+        // Gera a URL de exclusão substituindo o ID 0 pelo ID real
+        var urlBase = "{% url 'empresa_delete' 0 %}";
+        var urlFinal = urlBase.replace('0', id);
+        $('#form-exclusao').attr('action', urlFinal);
+    }
+
+    /**
+     * Redireciona para a view de PDF enviando os filtros atuais da URL
+     */
+    function imprimirPDF() {
+        var queryParams = window.location.search;
+        var urlBase = "{% url 'empresa_report_pdf' %}";
+        window.open(urlBase + queryParams, '_blank');
+    }
+</script>
+{% endblock %}

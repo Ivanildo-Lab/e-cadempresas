@@ -1,0 +1,115 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>e-CadEmpresas | {% block titulo_pagina %}Home{% endblock %}</title>
+  <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  
+  <!-- Estilos Online (CDNs) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.18/css/AdminLTE.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.18/css/skins/skin-blue.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.5.2/dist/select2-bootstrap4.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+
+  <header class="main-header">
+    <!-- Logo -->
+    <a href="{% url 'dashboard' %}" class="logo">
+      <span class="logo-mini"><b>e</b>CE</span>
+      <span class="logo-lg"><b>e-CadEmpresas</b></span>
+    </a>
+
+    <!-- Header Navbar -->
+    <nav class="navbar navbar-static-top" role="navigation">
+      <!-- Sidebar toggle button-->
+      <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+        <span class="sr-only">Toggle navigation</span>
+      </a>
+
+      <!-- Menu Superior Direito (Navbar Custom Menu) -->
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+          <!-- Nome do Usuário -->
+          <li class="user user-menu">
+            <a href="#">
+              <i class="fa fa-user-circle"></i>
+              <span class="hidden-xs">{{ user.get_full_name|default:user.username }}</span>
+            </a>
+          </li>
+          <!-- Botão Sair -->
+          <li>
+            <a href="{% url 'logout' %}" title="Sair do sistema">
+              <i class="fa fa-sign-out"></i> <span class="hidden-xs">Sair</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Menu Lateral -->
+  <aside class="main-sidebar">
+    <section class="sidebar">
+      <ul class="sidebar-menu" data-widget="tree">
+        <li class="header">MENU PRINCIPAL</li>
+        
+        <li class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+            <a href="{% url 'dashboard' %}"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a>
+        </li>
+        
+        <li class="{% if 'empresas' in request.path %}active{% endif %}">
+            <a href="{% url 'empresa_list' %}">
+                <i class="fa fa-industry"></i> <span>Empresas</span>
+            </a>
+        </li>
+
+        <li class="treeview {% if 'tabelas' in request.path %}active menu-open{% endif %}">
+          <a href="#">
+            <i class="fa fa-cogs"></i> <span>Configurações</span>
+            <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{% url 'tabela_list' %}?tipo=CNAE"><i class="fa fa-circle-o"></i> CNAEs</a></li>
+            <li><a href="{% url 'tabela_list' %}?tipo=REGIMEPAGAMENTO"><i class="fa fa-circle-o"></i> Regimes Tributários</a></li>
+            <li><a href="{% url 'tabela_list' %}?tipo=TIPOEMPRESA"><i class="fa fa-circle-o"></i> Tipos de Empresa</a></li>
+            <li><a href="{% url 'tabela_list' %}?tipo=SITUACAOCADASTRO"><i class="fa fa-circle-o"></i> Situação Cadastral</a></li>
+          </ul>
+        </li>
+      </ul>
+    </section>
+  </aside>
+
+  <!-- Conteúdo Central -->
+  <div class="content-wrapper">
+    <section class="content-header">
+      <h1>{% block titulo_cabecalho %}{% endblock %}</h1>
+    </section>
+
+    <section class="content container-fluid">
+      {% block content %}{% endblock %}
+    </section>
+  </div>
+  
+  <footer class="main-footer text-center">
+      <strong>Copyright &copy; {% now "Y" %} e-CadEmpresas.</strong>
+  </footer>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.18/js/adminlte.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+{% block scripts %}{% endblock %}
+</body>
+</html>

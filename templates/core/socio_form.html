@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block titulo_cabecalho %}Cadastro de Sócio{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <div class="box box-info">
+            <form method="post">
+                {% csrf_token %}
+                <div class="box-body">
+                    <div class="form-group">
+                        {{ form.empresa.label_tag }}
+                        {{ form.empresa }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.nome.label_tag }}
+                        {{ form.nome }}
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{ form.cpf.label_tag }}
+                            {{ form.cpf }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form.valor_participacao.label_tag }}
+                            {{ form.valor_participacao }}
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <button type="submit" class="btn btn-info pull-right">Salvar Sócio</button>
+                    <a href="{% url 'socio_list' %}" class="btn btn-default">Voltar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function(){
+        $('[data-mask]').mask();
+        $('.select2').select2({ theme: 'bootstrap4' });
+    });
+</script>
+{% endblock %}
