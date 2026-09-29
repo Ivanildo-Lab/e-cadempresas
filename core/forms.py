@@ -11,6 +11,8 @@ class EmpresaForm(forms.ModelForm):
             'razao_social': forms.TextInput(attrs={'class': 'form-control'}),
             'cnpj': forms.TextInput(attrs={'class': 'form-control', 'data-mask': '00.000.000/0000-00'}),
             'nire': forms.TextInput(attrs={'class': 'form-control'}),
+            'inscricao_estadual': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ex: 123456789 ou ISENTO'}),
+            'inscricao_municipal': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ex: 143079'}),
             'inicio_atividade': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'capital_social': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01'}),
             'endereco': forms.TextInput(attrs={'class': 'form-control'}),

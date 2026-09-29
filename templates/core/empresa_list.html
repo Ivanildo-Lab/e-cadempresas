@@ -12,10 +12,10 @@
                 <div class="col-md-4">
                     <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                        <input type="text" name="q" class="form-control" placeholder="Razão Social, CNPJ ou NIRE..." value="{{ request.GET.q|default:'' }}">
+                        <input type="text" name="q" class="form-control" placeholder="Razão Social, CNPJ, IE, NIRE, cidade, sócio..." value="{{ request.GET.q|default:'' }}">
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <select name="sit_cad" class="form-control">
                         <option value="">Todas as Situações</option>
                         {% for sit in situacoes_cadastro %}
@@ -25,7 +25,14 @@
                         {% endfor %}
                     </select>
                 </div>
-                <div class="col-md-5 text-right">
+                <div class="col-md-2">
+                    <select name="status" class="form-control">
+                        <option value="">Ativos + Inativos</option>
+                        <option value="ativos" {% if request.GET.status == 'ativos' %}selected{% endif %}>Somente Ativos</option>
+                        <option value="inativos" {% if request.GET.status == 'inativos' %}selected{% endif %}>Somente Inativos</option>
+                    </select>
+                </div>
+                <div class="col-md-4 text-right">
                     <button type="submit" class="btn btn-primary"><i class="fa fa-filter"></i> Filtrar</button>
                     
                     <a href="javascript:void(0)" onclick="imprimirPDF()" class="btn btn-danger">
@@ -47,6 +54,7 @@
                     <th style="width: 10px">ID</th>
                     <th>Razão Social</th>
                     <th>CNPJ</th>
+                    <th>Inscrição Estadual</th>
                     <th>Cidade/UF</th>
                     <th>Situação</th>
                     <th class="text-center" style="width: 100px;">Ações</th>
@@ -58,6 +66,7 @@
                     <td>{{ emp.id }}</td>
                     <td><b>{{ emp.razao_social }}</b></td>
                     <td>{{ emp.cnpj }}</td>
+                    <td>{{ emp.inscricao_estadual|default:"-" }}</td>
                     <td>{{ emp.cidade|default:"-" }}/{{ emp.estado|default:"-" }}</td>
                     <td>
                         <span class="label label-info">{{ emp.situacao_cadastro.descricao|default:"Não Inf." }}</span>
@@ -73,7 +82,7 @@
                     </td>
                 </tr>
                 {% empty %}
-                <tr><td colspan="6" class="text-center">Nenhuma empresa encontrada.</td></tr>
+                <tr><td colspan="7" class="text-center">Nenhuma empresa encontrada.</td></tr>
                 {% endfor %}
             </tbody>
         </table>
@@ -84,15 +93,15 @@
     <div class="box-footer clearfix">
         <ul class="pagination pagination-sm no-margin pull-right">
             {% if page_obj.has_previous %}
-                <li><a href="?page=1&q={{ request.GET.q|default:'' }}&sit_cad={{ request.GET.sit_cad|default:'' }}">&laquo; Primeira</a></li>
-                <li><a href="?page={{ page_obj.previous_page_number }}&q={{ request.GET.q|default:'' }}&sit_cad={{ request.GET.sit_cad|default:'' }}">Anterior</a></li>
+                <li><a href="?page=1&q={{ request.GET.q|default:'' }}&sit_cad={{ request.GET.sit_cad|default:'' }}&status={{ request.GET.status|default:'' }}">&laquo; Primeira</a></li>
+                <li><a href="?page={{ page_obj.previous_page_number }}&q={{ request.GET.q|default:'' }}&sit_cad={{ request.GET.sit_cad|default:'' }}&status={{ request.GET.status|default:'' }}">Anterior</a></li>
             {% endif %}
 
             <li class="active"><a href="#">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</a></li>
 
             {% if page_obj.has_next %}
-                <li><a href="?page={{ page_obj.next_page_number }}&q={{ request.GET.q|default:'' }}&sit_cad={{ request.GET.sit_cad|default:'' }}">Próxima</a></li>
-                <li><a href="?page={{ page_obj.paginator.num_pages }}&q={{ request.GET.q|default:'' }}&sit_cad={{ request.GET.sit_cad|default:'' }}">Última &raquo;</a></li>
+                <li><a href="?page={{ page_obj.next_page_number }}&q={{ request.GET.q|default:'' }}&sit_cad={{ request.GET.sit_cad|default:'' }}&status={{ request.GET.status|default:'' }}">Próxima</a></li>
+                <li><a href="?page={{ page_obj.paginator.num_pages }}&q={{ request.GET.q|default:'' }}&sit_cad={{ request.GET.sit_cad|default:'' }}&status={{ request.GET.status|default:'' }}">Última &raquo;</a></li>
             {% endif %}
         </ul>
     </div>

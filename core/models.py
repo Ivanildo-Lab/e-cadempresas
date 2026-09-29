@@ -16,6 +16,9 @@ class Empresa(models.Model):
     cnpj = models.CharField(max_length=18, unique=True)
     # Novo campo NIRE
     nire = models.CharField(max_length=50, blank=True, null=True, verbose_name="NIRE")
+    # Inscrições Estadual/Municipal (colunas INSCCliente/InscMunicipal do legado)
+    inscricao_estadual = models.CharField(max_length=30, blank=True, null=True, verbose_name="Inscrição Estadual")
+    inscricao_municipal = models.CharField(max_length=30, blank=True, null=True, verbose_name="Inscrição Municipal")
     
     endereco = models.CharField(max_length=255, blank=True, null=True)
     bairro = models.CharField(max_length=100, blank=True, null=True)

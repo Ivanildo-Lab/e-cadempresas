@@ -58,6 +58,8 @@ class Command(BaseCommand):
                     defaults={
                         'razao_social': row['Nomecliente'],
                         'nire': row['NIRE'], # Adicionado importação do NIRE
+                        'inscricao_estadual': (row.get('INSCCliente') or '').strip() or None,
+                        'inscricao_municipal': (row.get('InscMunicipal') or '').strip() or None,
                         'endereco': row['EnderecoCliente'],
                         'bairro': row['BairroCliente'],
                         'cidade': row['CidadeCliente'],

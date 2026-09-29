@@ -68,6 +68,20 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
+                                {{ form.inscricao_estadual.label_tag }}
+                                {{ form.inscricao_estadual }}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                {{ form.inscricao_municipal.label_tag }}
+                                {{ form.inscricao_municipal }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
                                 {{ form.inicio_atividade.label_tag }}
                                 {{ form.inicio_atividade }}
                             </div>
@@ -76,6 +90,12 @@
                             <div class="form-group">
                                 {{ form.capital_social.label_tag }}
                                 {{ form.capital_social }}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                {{ form.email.label_tag }}
+                                {{ form.email }}
                             </div>
                         </div>
                     </div>
