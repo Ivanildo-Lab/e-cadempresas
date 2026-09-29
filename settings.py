@@ -2,7 +2,6 @@
 
 import os
 from pathlib import Path
-import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent
@@ -17,7 +16,7 @@ SECRET_KEY = 'django-insecure-a3vs_q@2lx%obo*zks3^!6^b&-t1r$^6fgda%tly2du83*cd=x
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['geficogestor.pythonanywhere.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['ecadempresas-geficogestor.pythonanywhere.com', 'geficogestor.pythonanywhere.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -68,12 +67,14 @@ WSGI_APPLICATION = 'wsgi.application'
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 DATABASES = {
-    # Caminho absoluto: evita usar db.sqlite3 diferentes conforme o CWD
-    # (raiz vs e_cadempresas/) — era a causa do "no such column".
-    'default': dj_database_url.config(
-        default=f"sqlite:///{(BASE_DIR / 'db.sqlite3').as_posix()}",
-        conn_max_age=600
-    )
+    # Caminho absoluto a partir do BASE_DIR: o banco é sempre o mesmo
+    # independente do CWD (era a causa do "no such column" local).
+    # Sem dj_database_url de propósito: o venv de produção não tem
+    # essa dependência e o sqlite local não precisa dela.
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
 # Password validation
