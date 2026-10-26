@@ -11,12 +11,39 @@ BASE_DIR = Path(__file__).resolve().parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-a3vs_q@2lx%obo*zks3^!6^b&-t1r$^6fgda%tly2du83*cd=x'
+# Env primeiro (Coolify); fallback = chave antiga (repo privado). PENDENTE: rotacionar pos-migracao.
+SECRET_KEY = os.environ.get(
+    'SECRET_KEY',
+    'django-insecure-a3vs_q@2lx%obo*zks3^!6^b&-t1r$^6fgda%tly2du83*cd=x',
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DJANGO_DEBUG no Coolify; padrao False (nunca mais DEBUG=True hardcoded).
+DEBUG = os.environ.get('DJANGO_DEBUG', 'False').lower() in ('1', 'true', 'yes')
 
-ALLOWED_HOSTS = ['ecadempresas-geficogestor.pythonanywhere.com', 'geficogestor.pythonanywhere.com', 'localhost', '127.0.0.1']
+
+def _csv(value):
+    """Divide uma env CSV em lista, removendo espacos das pontas."""
+    return [v.strip() for v in value.split(',') if v.strip()]
+
+
+# Fallback cobre VPS/domínios novos + PA (legado) + 0.0.0.0 (healthcheck do Traefik)
+ALLOWED_HOSTS = _csv(
+    os.environ.get(
+        'DJANGO_ALLOWED_HOSTS',
+        'ecadempresas.ivcsofthouse.com.br,ecadempresas.187-127-63-185.sslip.io,'
+        'ecadempresas-geficogestor.pythonanywhere.com,geficogestor.pythonanywhere.com,'
+        '0.0.0.0,localhost,127.0.0.1',
+    )
+)
+
+CSRF_TRUSTED_ORIGINS = _csv(
+    os.environ.get(
+        'DJANGO_CSRF_TRUSTED_ORIGINS',
+        'https://ecadempresas.ivcsofthouse.com.br,https://ecadempresas.187-127-63-185.sslip.io,'
+        'http://ecadempresas-geficogestor.pythonanywhere.com,http://geficogestor.pythonanywhere.com',
+    )
+)
 
 
 # Application definition
@@ -73,7 +100,9 @@ DATABASES = {
     # essa dependência e o sqlite local não precisa dela.
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        # SQLITE_PATH aponta para o VOLUME (/app/data/db.sqlite3) no Docker;
+        # sem env, mantem o comportamento legado (BASE_DIR/db.sqlite3) no PA/local.
+        'NAME': os.environ.get('SQLITE_PATH', str(BASE_DIR / 'db.sqlite3')),
     }
 }
 
@@ -114,7 +143,18 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static_root') # Pasta onde o Django vai reunir tudo para produção
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STORAGES (Django 4.2+; STATICFILES_STORAGE foi descontinuado)
+# Compressed SEM manifest — collectstatic nunca falha por source map ausente
+STORAGES = {
+    'default': {'BACKEND': 'django.core.files.storage.FileSystemStorage'},
+    'staticfiles': {'BACKEND': 'whitenoise.storage.CompressedStaticFilesStorage'},
+}
+
+# Proxy SSL (Traefik/HTTPS)
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'dashboard'
 LOGOUT_REDIRECT_URL = 'login'
