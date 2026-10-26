@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     pkg-config \
     libcairo2-dev \
-    libfreetype1-dev \
+    libfreetype-dev \
     libxml2-dev \
     libxslt1-dev \
     zlib1g-dev \
