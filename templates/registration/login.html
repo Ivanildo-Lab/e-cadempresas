@@ -96,11 +96,22 @@
                 {% endfor %}
             {% endif %}
 
+            {% if form.errors %}
+                <div class="alert alert-danger" style="font-size: 13px; border-radius: 8px;">
+                    <i class="fa fa-exclamation-circle"></i>
+                    {% if form.username.errors or form.password.errors %}
+                        Por favor, preencha o usuário e a senha.
+                    {% else %}
+                        Usuário ou senha incorretos. Verifique os dados e tente novamente.
+                    {% endif %}
+                </div>
+            {% endif %}
+
             <div class="form-group">
                 <label>Usuário</label>
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                    <input type="text" name="username" class="form-control" placeholder="Seu usuário ou e-mail">
+                    <input type="text" name="username" class="form-control" placeholder="Seu usuário ou e-mail" value="{{ form.username.value|default:'' }}">
                 </div>
             </div>
 
